@@ -2,23 +2,23 @@
   "name": "Damian Zalewski - Agent Nieruchomości",
   "short_name": "DZ Nieruchomości",
   "description": "Aplikacja dla agenta nieruchomości - zarządzanie klientami i prezentacjami",
-  "start_url": "/",
+  "start_url": "/damian-zalewski-app/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e40af",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "/damian-zalewski-app/",
   "lang": "pl",
   "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "images/app-icon.jpg",
+      "src": "/damian-zalewski-app/images/app-icon.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "images/app-icon.jpg",
+      "src": "/damian-zalewski-app/images/app-icon.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
@@ -29,10 +29,10 @@
       "name": "Dodaj Kontakt",
       "short_name": "Nowy Kontakt",
       "description": "Dodaj nowy kontakt klienta",
-      "url": "/?action=add-contact",
+      "url": "/damian-zalewski-app/?action=add-contact",
       "icons": [
         {
-          "src": "images/contact-icon.jpg",
+          "src": "/damian-zalewski-app/images/contact-icon.jpg",
           "sizes": "96x96",
           "type": "image/jpeg"
         }
@@ -40,12 +40,12 @@
     },
     {
       "name": "Spotkania",
-      "short_name": "Kalendarz",
+      "short_name": "Kalendarz", 
       "description": "Sprawdź zaplanowane spotkania",
-      "url": "/?action=meetings",
+      "url": "/damian-zalewski-app/?action=meetings",
       "icons": [
         {
-          "src": "images/calendar-icon.jpg",
+          "src": "/damian-zalewski-app/images/calendar-icon.jpg",
           "sizes": "96x96",
           "type": "image/jpeg"
         }
@@ -56,7 +56,7 @@
   "prefer_related_applications": false,
   "screenshots": [
     {
-      "src": "images/hero-bg.jpg",
+      "src": "/damian-zalewski-app/images/hero-bg.jpg",
       "sizes": "540x720",
       "type": "image/jpeg",
       "platform": "wide",
