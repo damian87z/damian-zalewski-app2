@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damian Zalewski - Agent Nieruchomości</title>
+    <meta name="description" content="Aplikacja dla agenta nieruchomości - zarządzanie klientami i prezentacjami">
+    
+    <!-- PWA Meta -->
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DZ Nieruchomości">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="images/app-icon.jpg">
+    <link rel="icon" type="image/jpeg" href="images/app-icon.jpg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#ef4444',
+                        success: '#10b981',
+                        warning: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-primary text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <img src="images/logo.png" alt="Logo" class="w-8 h-8 rounded-full">
+                <h1 class="text-lg font-bold">DZ Nieruchomości</h1>
+            </div>
+            <button id="menuBtn" class="text-xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 z-40 hidden">
+        <div class="bg-white w-4/5 h-full shadow-lg transform -translate-x-full transition-transform duration-300" id="menuPanel">
+            <div class="p-4 border-b">
+                <h2 class="text-lg font-bold text-gray-800">Menu</h2>
+            </div>
+            <ul class="p-4 space-y-4">
+                <li><a href="#" onclick="showSection('dashboard')" class="flex items-center space-x-3 text-gray-700 hover:text-primary">
+                    <i class="fas fa-home"></i><span>Pulpit</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('contacts')" class="flex items-center space-x-3 text-gray-700 hover:text-primary">
+                    <i class="fas fa-users"></i><span>Kontakty</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('meetings')" class="flex items-center space-x-3 text-gray-700 hover:text-primary">
+                    <i class="fas fa-calendar"></i><span>Spotkania</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('settings')" class="flex items-center space-x-3 text-gray-700 hover:text-primary">
+                    <i class="fas fa-cog"></i><span>Ustawienia</span>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-16 pb-20 max-w-md mx-auto">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active p-4">
+            <div class="bg-gradient-to-r from-primary to-secondary text-white rounded-lg p-6 mb-6 shadow-lg">
+                <h2 class="text-2xl font-bold mb-2">Witaj, Damian!</h2>
+                <p class="opacity-90">Zarządzaj swoimi klientami i prezentacjami</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-full mr-3">
+                            <i class="fas fa-users text-blue-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Kontakty</p>
+                            <p class="text-xl font-bold" id="contactsCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-full mr-3">
+                            <i class="fas fa-calendar text-green-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Spotkania</p>
+                            <p class="text-xl font-bold" id="meetingsCount">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="space-y-3">
+                <button onclick="showSection('add-contact')" class="w-full bg-primary text-white rounded-lg p-4 flex items-center justify-between shadow-lg hover:bg-blue-700 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-user-plus mr-3"></i>
+                        <span class="font-semibold">Dodaj Nowy Kontakt</span>
+                    </div>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <button onclick="app && app.importFromContacts()" class="w-full bg-green-600 text-white rounded-lg p-4 flex items-center justify-between shadow-lg hover:bg-green-700 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-address-book mr-3"></i>
+                        <span class="font-semibold">Wykryj Nowy Kontakt</span>
+                    </div>
+                    <i class="fas fa-search"></i>
+                </button>
+                
+                <button onclick="showSection('meetings')" class="w-full bg-white border border-gray-200 text-gray-700 rounded-lg p-4 flex items-center justify-between shadow-md hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar-check mr-3"></i>
+                        <span class="font-semibold">Zarządzaj Spotkaniami</span>
+                    </div>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Today's Meetings -->
+            <div class="mt-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-3">Dzisiejsze spotkania</h3>
+                <div id="todayMeetings" class="space-y-2">
+                    <p class="text-gray-500 text-center py-4">Brak spotkań na dzisiaj</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Contact Section -->
+        <section id="add-contact" class="section p-4">
+            <div class="flex items-center mb-6">
+                <button onclick="showSection('dashboard')" class="mr-3 text-gray-600">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold text-gray-800">Dodaj Kontakt</h2>
+            </div>
+
+            <form id="contactForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Imię i nazwisko *</label>
+                    <input type="text" id="fullName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Numer telefonu *</label>
+                    <input type="tel" id="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Adres nieruchomości *</label>
+                    <input type="text" id="propertyAddress" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data prezentacji</label>
+                        <input type="date" id="presentationDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Godzina</label>
+                        <input type="time" id="presentationTime" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notatki</label>
+                    <textarea id="notes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-primary text-white rounded-lg py-3 font-semibold hover:bg-blue-700 transition-colors">
+                    Zapisz kontakt
+                </button>
+            </form>
+        </section>
+
+        <!-- Contacts Section -->
+        <section id="contacts" class="section p-4">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800">Kontakty</h2>
+                <button onclick="showSection('add-contact')" class="bg-primary text-white rounded-lg px-4 py-2 text-sm">
+                    <i class="fas fa-plus mr-1"></i> Dodaj
+                </button>
+            </div>
+
+            <div id="contactsList" class="space-y-3">
+                <p class="text-gray-500 text-center py-8">Brak kontaktów. Dodaj pierwszy kontakt!</p>
+            </div>
+        </section>
+
+        <!-- Meetings Section -->
+        <section id="meetings" class="section p-4">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800">Spotkania</h2>
+                <button onclick="showSection('settings')" class="text-gray-600">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+
+            <div id="meetingsList" class="space-y-3">
+                <p class="text-gray-500 text-center py-8">Brak zaplanowanych spotkań</p>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section p-4">
+            <div class="flex items-center mb-6">
+                <button onclick="showSection('dashboard')" class="mr-3 text-gray-600">
+                    <i class="fas fa-arrow-left text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold text-gray-800">Ustawienia</h2>
+            </div>
+
+            <div class="space-y-6">
+                <!-- SMS Templates -->
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <h3 class="font-bold text-gray-800 mb-4">Szablony SMS</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Szablon zaproszenia</label>
+                        <textarea id="invitationTemplate" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">Dzień dobry. W nawiązaniu do rozmowy, zapraszam na prezentację nieruchomości. Adres: [adres] Termin: [data], godz. [godzina] Pozdrawiam Damian Zalewski</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Szablon przypomnienia</label>
+                        <textarea id="reminderTemplate" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">Dzień dobry. Czy mogę prosić o potwierdzenie naszego dzisiejszego spotkania? Pozdrawiam Damian Zalewski</textarea>
+                    </div>
+                </div>
+
+                <!-- Reminder Settings -->
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <h3 class="font-bold text-gray-800 mb-4">Ustawienia przypomnień</h3>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-gray-700">Automatyczne przypomnienia</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoReminders" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Godzina od</label>
+                            <input type="time" id="reminderStartTime" value="09:00" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Godzina do</label>
+                            <input type="time" id="reminderEndTime" value="19:00" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity History -->
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <h3 class="font-bold text-gray-800 mb-4">Historia aktywności</h3>
+                    <div id="activityHistory" class="space-y-2 max-h-60 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-4">Brak aktywności do wyświetlenia</p>
+                    </div>
+                    <button onclick="app && app.clearActivityHistory()" class="w-full mt-3 bg-gray-200 text-gray-700 rounded-lg py-2 text-sm hover:bg-gray-300 transition-colors">
+                        Wyczyść historię
+                    </button>
+                </div>
+
+                <!-- System Information -->
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                    <h3 class="font-bold text-gray-800 mb-4">Status systemu</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Powiadomienia:</span>
+                            <span id="notificationStatus" class="text-gray-800">Sprawdzanie...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Automatyczne przypomnienia:</span>
+                            <span id="reminderServiceStatus" class="text-gray-800">Aktywne</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Ostatnie sprawdzenie:</span>
+                            <span id="lastCheckTime" class="text-gray-800">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full bg-success text-white rounded-lg py-3 font-semibold hover:bg-green-600 transition-colors">
+                    Zapisz ustawienia
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+        <div class="max-w-md mx-auto grid grid-cols-4">
+            <button onclick="showSection('dashboard')" class="nav-btn p-3 text-center" data-section="dashboard">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-xs">Pulpit</span>
+            </button>
+            <button onclick="showSection('contacts')" class="nav-btn p-3 text-center" data-section="contacts">
+                <i class="fas fa-users text-xl mb-1"></i>
+                <span class="text-xs">Kontakty</span>
+            </button>
+            <button onclick="showSection('meetings')" class="nav-btn p-3 text-center" data-section="meetings">
+                <i class="fas fa-calendar text-xl mb-1"></i>
+                <span class="text-xs">Spotkania</span>
+            </button>
+            <button onclick="showSection('add-contact')" class="nav-btn p-3 text-center" data-section="add-contact">
+                <i class="fas fa-plus text-xl mb-1"></i>
+                <span class="text-xs">Dodaj</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modals -->
+    <!-- SMS Confirmation Modal -->
+    <div id="smsModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center h-full p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <h3 class="text-lg font-bold mb-4">Wyślij SMS do klienta</h3>
+                <textarea id="smsPreview" rows="5" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4"></textarea>
+                <div class="flex space-x-3">
+                    <button onclick="closeSmsModal()" class="flex-1 bg-gray-200 text-gray-800 rounded-lg py-2 font-semibold">Anuluj</button>
+                    <button onclick="sendSms()" class="flex-1 bg-primary text-white rounded-lg py-2 font-semibold">Wyślij SMS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center h-full p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Sukces!</h3>
+                <p id="successMessage" class="text-gray-600 mb-4"></p>
+                <button onclick="closeSuccessModal()" class="bg-primary text-white rounded-lg px-6 py-2 font-semibold">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/pwa.js"></script>
+</body>
+</html>
